@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cyberbullying Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <div class="wrap head">
+    <div class="brand"><span class="logo">🛡️</span>
+      <div><h1>Cyberbullying Detector</h1><p>TF-IDF + LinearSVC text classifier</p></div></div>
+    <nav>
+      <button class="tab active" data-tab="analyze">Analyze</button>
+      <button class="tab" data-tab="batch">Batch</button>
+      <button class="tab" data-tab="dashboard">Dashboard</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ANALYZE -->
+  <section id="analyze" class="panel active">
+    <div class="card">
+      <label for="text">Paste a message, comment or tweet</label>
+      <textarea id="text" rows="4" maxlength="5000" placeholder="e.g. you are a pathetic loser, nobody likes you"></textarea>
+      <div class="row">
+        <button id="analyzeBtn" class="btn">Analyze message</button>
+        <span class="chips">Try:
+          <a href="#" class="ex">You are so beautiful</a>
+          <a href="#" class="ex">shut up you idiot, nobody likes you</a>
+          <a href="#" class="ex">Thanks for helping with my homework</a>
+        </span>
+      </div>
+    </div>
+    <div id="result" class="card hidden">
+      <div class="verdict">
+        <div id="badge" class="badge"></div>
+        <div class="meter-wrap">
+          <div class="meter-label"><span>Toxicity</span><b id="toxPct"></b></div>
+          <div class="meter"><div id="meterFill"></div></div>
+          <small id="meta"></small>
+        </div>
+      </div>
+      <h3>What the model noticed</h3>
+      <p id="highlight" class="highlight"></p>
+      <small class="muted">Words shaded red pushed the prediction toward "bullying".</small>
+    </div>
+  </section>
+
+  <!-- BATCH -->
+  <section id="batch" class="panel">
+    <div class="card">
+      <label for="batchText">One message per line (max 200)</label>
+      <textarea id="batchText" rows="7" placeholder="Have a great weekend everyone&#10;you are a worthless clown&#10;Nice work on the project"></textarea>
+      <div class="row"><button id="batchBtn" class="btn">Scan all</button>
+        <label class="btn ghost">Upload .txt/.csv<input id="file" type="file" accept=".txt,.csv" hidden></label></div>
+    </div>
+    <div id="batchOut" class="card hidden">
+      <div class="stats" id="batchStats"></div>
+      <table><thead><tr><th>Message</th><th>Verdict</th><th>Severity</th><th>Score</th></tr></thead><tbody id="batchRows"></tbody></table>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="panel">
+    <div class="grid">
+      <div class="card"><h3>Dataset</h3><div id="dsStats" class="stats"></div></div>
+      <div class="card"><h3>Confusion matrix <small class="muted">(test set)</small></h3><div id="cm" class="cm"></div></div>
+    </div>
+    <div class="card"><h3>Model comparison <small class="muted">(F1 &amp; accuracy on held-out test set)</small></h3><div id="bars"></div>
+      <small class="muted" id="prodNote"></small></div>
+    <div class="card">
+      <div class="row spread"><h3>Recent analyses</h3><button id="clearBtn" class="btn ghost small">Clear history</button></div>
+      <div id="histStats" class="stats"></div>
+      <table><thead><tr><th>Message</th><th>Verdict</th><th>Severity</th><th>When</th></tr></thead><tbody id="histRows"></tbody></table>
+    </div>
+  </section>
+</main>
+<footer class="wrap muted">Built from your Cyberbullying_Model notebook · Flask + scikit-learn</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
